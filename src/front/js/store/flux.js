@@ -21,6 +21,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().changeColor(0, "green");
 			},
 
+			login: (email,password) => {
+				console.log("login en flux")
+				const requestOptions = {
+					        method: "POST",
+					        headers: { "Content-Type": "application/json" },
+					        body: JSON.stringify({
+					            email: email,
+					            password: password
+					        })
+					    };
+				
+					    // Realiza la solicitud fetch aquí
+					    fetch(process.env.BACKEND_URL + "/api/login", requestOptions)
+					        .then(response => response.json())
+					        .then(data => console.log(data))
+					        .catch(error => console.error("Error en la solicitud:", error));
+			},
+
 			getMessage: async () => {
 				try{
 					// fetching data from the backend
