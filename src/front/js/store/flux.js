@@ -27,6 +27,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().changeColor(0, "green");
 			},
 
+			logout: () => {
+				console.log("logout en flux")
+				localStorage.removeItem("token");
+				setStore({ auth: false });
+			},
+
+
 			login: (email,password) => {
 				console.log("login en flux")
 				const requestOptions = {
@@ -54,6 +61,35 @@ const getState = ({ getStore, getActions, setStore }) => {
 								console.log(data)
 							})
 					        .catch(error => console.error("Error en la solicitud:", error));
+			},
+
+			signup: (email, password) => {
+				console.log("signup en flux");
+				const requestOptions = {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({
+						email: email,
+						password: password,
+					}),
+				};
+
+				// Realiza la solicitud fetch aquí
+				fetch(process.env.BACKEND_URL + "/api/signup", requestOptions)
+					.then((response) => {
+						console.log(response.status);
+						if (response.status === 200) {
+							return response.json(); // Devuelve el JSON solo si la respuesta es correcta
+						} else {
+							throw new Error("Signup failed"); 
+						}
+					})
+					.then((data) => {
+						localStorage.setItem("token", data.access_token);
+						setStore({ auth: true }); // estado de autenticación
+						console.log(data);
+					})
+					.catch((error) => console.error("Error en la solicitud:", error));
 			},
 
 			getMessage: async () => {

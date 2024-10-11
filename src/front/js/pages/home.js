@@ -5,9 +5,11 @@ import Form from "../component/form";
 import { Demo } from "./demo";
 import { Navigate } from "react-router-dom";
 
+
 export const Home = () => {
 	const { store, actions } = useContext(Context);
-	console.log("secargihime")
+
+	console.log("secargohome")
 
 	return (
 		<div className="text-center mt-5">
