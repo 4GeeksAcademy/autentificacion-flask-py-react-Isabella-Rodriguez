@@ -8,7 +8,7 @@ const Form = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    actions.login()
+    actions.login(email, password)
 
     function sendData(e) {
         e.preventDefault(); // Evita el comportamiento por defecto del formulario
@@ -24,7 +24,7 @@ const Form = () => {
     //         })
     //     };
 
-    //     // Realiza la solicitud fetch aquí
+    //     // Realiza la solicitud fetchgit aquí
     //     fetch(process.env.BACKEND_URL + "/api/login", requestOptions)
     //         .then(response => response.json())
     //         .then(data => console.log(data))
