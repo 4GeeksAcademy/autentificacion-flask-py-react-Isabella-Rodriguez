@@ -13,7 +13,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+
+			auth: false
+
+
+
+
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -34,8 +40,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 				
 					    // Realiza la solicitud fetch aquí
 					    fetch(process.env.BACKEND_URL + "/api/login", requestOptions)
-					        .then(response => response.json())
-					        .then(data => console.log(data))
+					        .then(response => {
+								console.log(response.status)
+								if(response.status == 200){
+									//pasar auth a true
+									setStore({ auth: true });
+
+								}
+								return response.json()
+							})
+					        .then(data =>{
+								localStorage.setItem("token", data.access_token);
+								console.log(data)
+							})
 					        .catch(error => console.error("Error en la solicitud:", error));
 			},
 

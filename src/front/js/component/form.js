@@ -1,4 +1,4 @@
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext";
 
 const Form = () => {
@@ -8,28 +8,30 @@ const Form = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    actions.login(email, password)
-
     function sendData(e) {
         e.preventDefault(); // Evita el comportamiento por defecto del formulario
         console.log("send data");
         console.log(email, password);
 
-    //     const requestOptions = {
-    //         method: "POST",
-    //         headers: { "Content-Type": "application/json" },
-    //         body: JSON.stringify({
-    //             email: email,
-    //             password: password
-    //         })
-    //     };
+        // Mover la acción de login dentro de sendData para que solo se ejecute al enviar el formulario
+        actions.login(email, password);
 
-    //     // Realiza la solicitud fetchgit aquí
-    //     fetch(process.env.BACKEND_URL + "/api/login", requestOptions)
-    //         .then(response => response.json())
-    //         .then(data => console.log(data))
-    //         .catch(error => console.error("Error en la solicitud:", error));
-         }
+        // Aquí puedes agregar cualquier lógica adicional, como realizar una solicitud fetch
+        // const requestOptions = {
+        //     method: "POST",
+        //     headers: { "Content-Type": "application/json" },
+        //     body: JSON.stringify({
+        //         email: email,
+        //         password: password
+        //     })
+        // };
+
+        // // Realiza la solicitud fetch aquí
+        // fetch(process.env.BACKEND_URL + "/api/login", requestOptions)
+        //     .then(response => response.json())
+        //     .then(data => console.log(data))
+        //     .catch(error => console.error("Error en la solicitud:", error));
+    }
 
     return (
         <div>
