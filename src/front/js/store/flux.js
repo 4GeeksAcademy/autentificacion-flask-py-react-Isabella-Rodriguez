@@ -64,33 +64,39 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			signup: (email, password) => {
+				// Validar que ambos campos no estén vacíos
+				if (!email || !password) {
+					console.log("Por favor, completa todos los campos.");
+					return; // Salir de la función si hay campos vacíos
+				}
+			
 				console.log("signup en flux");
-				const requestOptions = {
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
+				
+				fetch(process.env.BACKEND_URL + "/api/signup", {
+					method: 'POST',
+					headers: {"Content-Type": "application/json"},
 					body: JSON.stringify({
 						email: email,
-						password: password,
+						password: password
 					}),
-				};
-
-				// Realiza la solicitud fetch aquí
-				fetch(process.env.BACKEND_URL + "/api/signup", requestOptions)
-					.then((response) => {
-						console.log(response.status);
-						if (response.status === 200) {
-							return response.json(); // Devuelve el JSON solo si la respuesta es correcta
-						} else {
-							throw new Error("Signup failed"); 
-						}
-					})
-					.then((data) => {
-						localStorage.setItem("token", data.access_token);
-						setStore({ auth: true }); // estado de autenticación
-						console.log(data);
-					})
-					.catch((error) => console.error("Error en la solicitud:", error));
+					redirect: "follow"
+				})
+				.then((response) => {
+					console.log(response.status);
+					if (response.status === 200) {
+						setStore({ auth: true });
+					}
+					return response.json();
+				})
+				.then((data) => {
+					// Aquí puedes manejar la respuesta del servidor, como mostrar un mensaje de éxito
+					console.log(data);
+				})
+				.catch((error) => {
+					console.error("Error en la solicitud:", error);
+				});
 			},
+			
 
 			getMessage: async () => {
 				try{

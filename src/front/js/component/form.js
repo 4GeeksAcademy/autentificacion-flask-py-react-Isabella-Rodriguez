@@ -1,10 +1,9 @@
 import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext";
+import PropTypes from "prop-types";
 
-const Form = () => {
-
+const Form = (props) => {
     const { store, actions } = useContext(Context);
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -13,29 +12,24 @@ const Form = () => {
         console.log("send data");
         console.log(email, password);
 
+        // Aquí puedes agregar la validación antes de hacer el login o signup
+        if (!email || !password) {
+            console.log("Por favor, completa todos los campos.");
+            return; // Salir de la función si hay campos vacíos
+        }
+
         // Mover la acción de login dentro de sendData para que solo se ejecute al enviar el formulario
-        actions.login(email, password);
-
-        // Aquí puedes agregar cualquier lógica adicional, como realizar una solicitud fetch
-        // const requestOptions = {
-        //     method: "POST",
-        //     headers: { "Content-Type": "application/json" },
-        //     body: JSON.stringify({
-        //         email: email,
-        //         password: password
-        //     })
-        // };
-
-        // // Realiza la solicitud fetch aquí
-        // fetch(process.env.BACKEND_URL + "/api/login", requestOptions)
-        //     .then(response => response.json())
-        //     .then(data => console.log(data))
-        //     .catch(error => console.error("Error en la solicitud:", error));
+        if (props.text === "Crear Usuario") {
+            actions.signup(email, password);
+        } else {
+            actions.login(email, password);
+        }
     }
 
     return (
         <div>
             <form className="w-50 mx-auto" onSubmit={sendData}>
+                <h1>{props.text}</h1>
                 <div className="mb-3">
                     <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
                     <input
@@ -57,7 +51,7 @@ const Form = () => {
                         id="exampleInputPassword1"
                     />
                 </div>
-                <button type="submit" className="btn btn-primary">Login</button>
+                <button type="submit" className="btn btn-primary">{props.text}</button>
             </form>
         </div>
     );
